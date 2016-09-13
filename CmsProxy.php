@@ -11,13 +11,8 @@ Released under the GNU General Public License v3
 
 
 // CONFIG -------------------------------------
+include ("config.php");
 error_reporting(0);
-$cms_api_base_url = 'https://acano-core1.cisco.lab:445/api/v1/';
-$cms_webrtc_base_url = 'https://acano-core1.cisco.lab/invited.sf?id=';
-$ews_admin_username = "admin";
-$ews_admin_password = "C1sc0123";
-$phone_sda = "+33.1.44.66.55.44";
-$sip_domain = "@ciscofrance.com";
 // -------------------------------------------
 
 
@@ -37,7 +32,7 @@ curl_setopt($session, CURLOPT_HEADER, ($headers == "true") ? true : false);
 curl_setopt($session, CURLOPT_FOLLOWLOCATION, true);
 curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($session, CURLOPT_USERPWD, $ews_admin_username . ":" . $ews_admin_password);
+curl_setopt($session, CURLOPT_USERPWD, $cms_admin_username . ":" . $cms_admin_password);
 
 $response = curl_exec($session);
 $xml = new SimpleXMLElement($response);
@@ -57,7 +52,7 @@ curl_setopt($session, CURLOPT_HEADER, ($headers == "true") ? true : false);
 curl_setopt($session, CURLOPT_FOLLOWLOCATION, true);
 curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($session, CURLOPT_USERPWD, $ews_admin_username . ":" . $ews_admin_password);
+curl_setopt($session, CURLOPT_USERPWD, $cms_admin_username . ":" . $cms_admin_password);
 
 $response = curl_exec($session);
 
@@ -78,7 +73,7 @@ curl_setopt($session, CURLOPT_HEADER, ($headers == "true") ? true : false);
 curl_setopt($session, CURLOPT_FOLLOWLOCATION, true);
 curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($session, CURLOPT_USERPWD, $ews_admin_username . ":" . $ews_admin_password);
+curl_setopt($session, CURLOPT_USERPWD, $cms_admin_username . ":" . $cms_admin_password);
 
 $response = curl_exec($session);
 

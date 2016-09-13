@@ -1,0 +1,23 @@
+<?php
+/*
+--- Cisco CMS Outlook Addin /w OBTP - v1 ---
+
+Config.php : Config File
+
+Initial Creator : Guillaume BRAUX (gubraux@cisco.com)
+Released under the GNU General Public License v3
+*/
+
+$cms_api_base_url = 'https://acano-core1.cisco.lab:445/api/v1/';
+$cms_webrtc_base_url = 'https://acano-core1.cisco.lab/invited.sf?id=';
+$cms_admin_username = "admin";
+$cms_admin_password = "something";
+$phone_sda = "+33.1.44.66.55.44";
+$sip_domain = "@company.com";
+
+
+$ews_server = "exchange.cisco.lab";
+$ews_admin_username = "cisco.lab\administrator";
+$ews_admin_password = "something";
+
+?>

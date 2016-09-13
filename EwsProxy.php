@@ -49,6 +49,13 @@ include ("php-ews/EWSType/ItemType.php");
 include ("php-ews/EWSType/SetItemFieldType.php");
 
 
+
+// CONFIG -------------------------------------
+//error_reporting(0);
+include ("config.php");
+// -------------------------------------------
+
+
 // Wait 5 seconds to ensure that the draft calendar item is saved by the Outlook client to the Server
 sleep(5);
 
@@ -61,7 +68,7 @@ $email = $_GET['email'];
 // ------------- GET DRAFT CALENDAR ITEM ID -------------
 // Use the custom GUID set by the Addin to find the EWS Item_ID
 
-$ews = new ExchangeWebServices("exchange.cisco.lab", "cisco.lab\administrator", "C1sc0123");
+$ews = new ExchangeWebServices($ews_server, $ews_admin_username, $ews_admin_password);
 
 $ei = new EWSType_ExchangeImpersonationType();
 $sid = new EWSType_ConnectingSIDType();
