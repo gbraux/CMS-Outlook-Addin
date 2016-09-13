@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="MailApp" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0">
+  <Id>1e5a160d-61bd-49c9-9936-49999999999d</Id>
+  <Version>23.0.0.0</Version>
+  <ProviderName>[Provider name]</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Cisco Meeting Server Booking Addin"/>
+  <Description DefaultValue="[Outlook Add-in description]"/>
+  <HighResolutionIconUrl DefaultValue="https://showroom.ciscofrance.com/bookingplugin/OutlookAddin/images/hi-res-icon.png"/>
+  <Hosts>
+    <Host Name="Mailbox"/>
+  </Hosts>
+  <Requirements>
+    <Sets>
+      <Set Name="MailBox" MinVersion="1.1"/>
+    </Sets>
+  </Requirements>
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://showroom.ciscofrance.com/bookingplugin/OutlookAddin/appread/home/home.html"/>
+        <RequestedHeight>250</RequestedHeight>
+      </DesktopSettings>
+    </Form>
+    <Form xsi:type="ItemEdit">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://showroom.ciscofrance.com/bookingplugin/OutlookAddin/appcompose/home/home.html"/>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+  <Permissions>ReadWriteItem</Permissions>
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Edit"/>
+    <Rule xsi:type="ItemIs" ItemType="Appointment" FormType="Edit"/>
+    <Rule xsi:type="ItemIs" ItemType="Appointment" FormType="Read"/>
+  </Rule>
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Hosts>
+      <Host xsi:type="MailHost">
+        <DesktopFormFactor>
+          <FunctionFile resid="funcFile"/>
+		  <ExtensionPoint xsi:type="AppointmentOrganizerCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="organizerCmdGroup">
+                <Label resid="groupLabel"/>
+
+				<Control xsi:type="Button" id="organizerAddMeeting">
+                  <Label resid="addMeetingLabel"/>
+                  <Supertip>
+                    <Title resid="addMeetingTitle"/>
+                    <Description resid="addMeetingDesc"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon-16"/>
+                    <bt:Image size="32" resid="icon-32"/>
+                    <bt:Image size="80" resid="icon-80"/>
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>setMeeting</FunctionName>
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+    <Resources>
+      <bt:Images>
+        <bt:Image id="icon-16" DefaultValue="https://showroom.ciscofrance.com/bookingplugin/OutlookAddin/images/icon-16.png"/>
+        <bt:Image id="icon-32" DefaultValue="https://showroom.ciscofrance.com/bookingplugin/OutlookAddin/images/icon-32.png"/>
+        <bt:Image id="icon-80" DefaultValue="https://showroom.ciscofrance.com/bookingplugin/OutlookAddin/images/icon-80.png"/> 
+	  </bt:Images>
+      <bt:Urls>
+        <bt:Url id="funcFile" DefaultValue="https://showroom.ciscofrance.com/bookingplugin/OutlookAddin/FunctionFile/Functions.html"/>
+        <bt:Url id="readPaneUrl" DefaultValue="https://showroom.ciscofrance.com/bookingplugin/OutlookAddin/appread/home/home.html"/>
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="groupLabel" DefaultValue="Cisco Meeting Server"/>
+		<bt:String id="addMeetingLabel" DefaultValue="Add Virtual Meeting"/>
+        <bt:String id="addMeetingTitle" DefaultValue="Add Virtual Meeting"/>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+		<bt:String id="addMeetingDesc" DefaultValue="Meeting Blablaba"/>
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>
