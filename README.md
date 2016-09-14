@@ -17,7 +17,7 @@ A one-click Add-In to Outlook 2013, 2016 & Web/Mobile to add your Cisco Meeting 
 
 # Techical details
 
-Because of limitations of "light" javascript-based Outlook addins (supported since Outlook 2013 and pushed by the Exchange Server), we also need 2 server-side PHP scripts hosted on a web server to handle some stuff the client-side addin can't do itself (think about API calls to CMS, or some Exchange Web Services calls).
+Because of limitations of "light" javascript-based Outlook Add-ins (supported since Outlook 2013 and pushed by the Exchange Server), we also need 2 server-side PHP scripts hosted on a web server to handle some stuff the client-side addin can't do itself (think about API calls to CMS, or some Exchange Web Services calls).
 Those scripts HAVE to be hosted on the same Web Server as the Addin (no support for CrossDomain calls), and are called by the addin through Javascript AJAX calls.
 
 - CmsProxy.php : Server side PHP script to make REST requests to the CMS Server API on behalf on the Addin, and get the default space details of a user
@@ -25,7 +25,7 @@ Those scripts HAVE to be hosted on the same Web Server as the Addin (no support 
 
 ## Addin Location
 
-The Outlook Addin itself is located in the OutlookAddin folder. Those files are automaticaly downloaded by the client when the addin is pushed by the Exchange Server.
+The Outlook Addin itself is located in the OutlookAddin folder. Those files are automaticaly downloaded by the client when the addin is pushed by the Exchange Server (note : not all files may be needed for the Add-In to work, just using the default template from MSFT ...).
 
 The most important files are :
 
@@ -44,11 +44,11 @@ If the user CMS URI is NOT the email address, some codes have to be tweaked to s
 
 ## EWS Impersonation
 
-The addin (through server-side PHP Scripts) have to make calls to EWS (Echanges Web Services) for advanced features (ie. set OBTP / UCCapabilites property to the calendar item). Impersonnation is used so the script (through EWS) can get access to the current mailbox of the user making the request. As such, a super user (with impersonnation enabled) needs to be used to make the EWS calls.
+The add-in (through server-side PHP Scripts) have to make calls to EWS (Echanges Web Services) for advanced features (ie. set OBTP / UCCapabilites property to the calendar item). Impersonnation is used so the script (through EWS) can get access to the current mailbox of the user making the request. As such, a super user (with impersonnation enabled) needs to be used to make the EWS calls.
 
 # Install
 
 1. Copy all files to a HTTPS + PHP enabled Web Server (note : Outlook seems to check for SSL certificate, so ensure that your web server certificate is trusted by the clients)
 2. Edit Config.php file with necessary informations
-3. Configure the addin XML manifest (CMS_Addin_Manifest.xml) with the right HTTP paths of your web server
-4. Upload the addin XML manifest to your exchange server addins repository. For testing, addins can be configured at user/mailbox level from he Heavy Client (Outlook > Account Infomation > Manage Add-Ins) or from Outlook Web Access (Gear icon > Manage Apps). User may need specific Exchange permission to be able to install add-ins himself.
+3. Configure the addin XML manifest (CMS_Addin_Manifest.xml) with the right HTTPS domain/paths of your web server
+4. Upload the addin XML manifest to your exchange server addins repository. For testing, addins can be configured at user/mailbox level from the Heavy Client (Outlook > Account Infomation > Manage Add-Ins) or from Outlook Web Access (Gear icon > Manage Apps). Users may need specific Exchange permission to be able to install add-ins themselves.
