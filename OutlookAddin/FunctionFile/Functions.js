@@ -54,12 +54,13 @@ function meetingSchedRoutine(event) {
           // It is a hack if the CMS username is not (exactly) the email address of the outlook user (ie. Outlook : gubraux@ciscofrance.com | CMS : gubraux.cms@ciscofrance.com)
           // Here, we only keep the left portion of the email
 
-          // userFilter = Office.context.mailbox.userProfile.emailAddress;
-          // userFilter.substring(0, email.indexOf("@"));
+          userFilter = Office.context.mailbox.userProfile.emailAddress;
+          userFilter = userFilter.substring(0, userFilter.indexOf("@"));
+          showMessage("User = " + userFilter, 'icon-16', event);
 
           // DEBUG - Force Username ------
 
-          userFilter = "pierre";
+          //userFilter = "pierre";
 
           // -----------------------------
 
