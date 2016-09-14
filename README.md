@@ -46,6 +46,7 @@ The addin (through server-side PHP Scripts) have to make calls to EWS (Echanges 
 
 # Install
 
-1. Copy all files to a HTTPS + PHP enabled Web Server
+1. Copy all files to a HTTPS + PHP enabled Web Server (note : Outlook seems to check for SSL certificate, so ensure that your web server certificate is trusted by the clients)
 2. Edit Config.php file with necessary informations
 3. Configure the addin XML manifest (CMS_Addin_Manifest.xml) with the right HTTP paths of your web server
+4. Upload the addin XML manifest to your exchange server addins repository. For testing, addins can be configured at user/mailbox level from he Heavy Client (Outlook > Account Infomation > Manage Add-Ins) or from Outlook Web Access (Gear icon > Manage Apps). User may need specific Exchange permission to be able to install add-ins himself.
