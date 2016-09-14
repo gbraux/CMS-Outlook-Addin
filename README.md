@@ -1,6 +1,6 @@
 # CMS-Outlook-Addin
 
-** Note : This is a proof-of-concept, developped and tested only into a lab environement. Trying to implement it as-is into a production envt may not be possible, or may required advanced tweaking at code-level **
+** Note : This is a proof-of-concept, developped and tested only into a lab environement. Trying to implement it as-is into a production envt may not be possible, or may require advanced tweaking at code-level **
 
 ![My image](https://raw.githubusercontent.com/gbraux/CMS-Outlook-Addin/master/BookingAddin1-edit.png)
 ![My image](https://raw.githubusercontent.com/gbraux/CMS-Outlook-Addin/master/BookingAddin2-edit.png)
