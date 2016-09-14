@@ -17,8 +17,8 @@
 Because of limitations of "light" javascript-based Outlook addins (supported since Outlook 2013 and pushed by the Exchange Server), we also need 2 server-side PHP scripts hosted on a web server to handle some stuff the client-side addin can't do itself (think about API calls to CMS, or some Exchange Web Services calls).
 Those scripts HAVE to be hosted on the same Web Server as the Addin (no support for CrossDomain calls), and are called by the addin through Javascript AJAX calls.
 
-CmsProxy.php : Server side PHP script to make REST requests to the CMS Server API on behalf on the Addin, and get the default space details of a user
-EwsProxy.php : Server side PHP script to set the UCCapabilities property of a calendar Item through EWS (Exchange Web Services) on behalf of the addin.
+- CmsProxy.php : Server side PHP script to make REST requests to the CMS Server API on behalf on the Addin, and get the default space details of a user
+- EwsProxy.php : Server side PHP script to set the UCCapabilities property of a calendar Item through EWS (Exchange Web Services) on behalf of the addin.
 
 ## Addin Location
 
@@ -26,9 +26,9 @@ The Outlook Addin itself is located in the OutlookAddin folder. Those files are 
 
 The most important files are :
 
-CMS_Addin_Manifest.xml : The descriptor of the addin, where to get necessary files through HTTP, etc ... This needs to be configured. This is the file that you have to load into Exchange Server when installing the addin.
+- CMS_Addin_Manifest.xml : The descriptor of the addin, where to get necessary files through HTTP, etc ... This needs to be configured. This is the file that you have to load into Exchange Server when installing the addin.
 
-FunctionFile/Function.js : The most important file, as it is the core logic of the Addin (ie. what happens when you click the addin button in Outlook !)
+- FunctionFile/Function.js : The most important file, as it is the core logic of the Addin (ie. what happens when you click the addin button in Outlook !)
 
 ## OBTP Support
 
