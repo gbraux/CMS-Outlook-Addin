@@ -1,5 +1,6 @@
 # CMS-Outlook-Addin
 
+** Note : This is a proof-of-concept, developped and tested only into a lab environement. Trying to implement it as-is into a production envt may not be possible, or may required advanced tweaking at code-level **
 
 ![My image](https://raw.githubusercontent.com/gbraux/CMS-Outlook-Addin/master/BookingAddin1-edit.png)
 ![My image](https://raw.githubusercontent.com/gbraux/CMS-Outlook-Addin/master/BookingAddin2-edit.png)
@@ -47,4 +48,4 @@ The addin (through server-side PHP Scripts) have to make calls to EWS (Echanges 
 
 1. Copy all files to a HTTPS + PHP enabled Web Server
 2. Edit Config.php file with necessary informations
-3. If needed, tweak a bit 
+3. Configure the addin XML manifest (CMS_Addin_Manifest.xml) with the right HTTP paths of your web server
