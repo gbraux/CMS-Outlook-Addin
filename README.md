@@ -1,11 +1,11 @@
-# CMS-Outlook-Addin
+# CMS-Outlook-Add-In
 
 A one-click Add-In to Outlook 2013, 2016 & Web/Mobile to add your Cisco Meeting Server personnal meeting room details to your Outlook meeting request body. It also handles room-based video endpoints reservation & "One-Button-To-Push" (Cisco TMS-XE mandatory) if those rooms are added as participants in the meeting request.
 
 **Note : This is a proof-of-concept, developped and tested only into a lab environement. Trying to implement it as-is into a production envt may not be possible, or may require advanced tweaking at code-level**
 
-![My image](https://raw.githubusercontent.com/gbraux/CMS-Outlook-Addin/master/BookingAddin1-edit.png)
-![My image](https://raw.githubusercontent.com/gbraux/CMS-Outlook-Addin/master/BookingAddin2-edit.png)
+![My image](https://raw.githubusercontent.com/gbraux/CMS-Outlook-Add-In/master/BookingAdd-In1-edit.png)
+![My image](https://raw.githubusercontent.com/gbraux/CMS-Outlook-Add-In/master/BookingAdd-In2-edit.png)
 
 # Features
 -	Server Side Add-In, nothing to install on the outlook clients (Pushed by exchange server to all the clients).
@@ -17,29 +17,29 @@ A one-click Add-In to Outlook 2013, 2016 & Web/Mobile to add your Cisco Meeting 
 
 # Techical details
 
-Because of limitations of "light" javascript-based Outlook Add-ins (supported since Outlook 2013 and pushed by the Exchange Server), we also need 2 server-side PHP scripts hosted on a web server to handle some stuff the client-side addin can't do itself (think about API calls to CMS, or some Exchange Web Services calls).
-Those scripts HAVE to be hosted on the same Web Server as the Addin (no support for CrossDomain calls), and are called by the addin through Javascript AJAX calls.
+Because of limitations of "light" javascript-based Outlook Add-ins (supported since Outlook 2013 and pushed by the Exchange Server), we also need 2 server-side PHP scripts hosted on a web server to handle some stuff the client-side Add-In can't do itself (think about API calls to CMS, or some Exchange Web Services calls).
+Those scripts HAVE to be hosted on the same Web Server as the Add-In (no support for CrossDomain calls), and are called by the Add-In through Javascript AJAX calls.
 
-- CmsProxy.php : Server side PHP script to make REST requests to the CMS Server API on behalf on the Addin, and get the default space details of a user
-- EwsProxy.php : Server side PHP script to set the UCCapabilities property of a calendar Item through EWS (Exchange Web Services) on behalf of the addin.
+- CmsProxy.php : Server side PHP script to make REST requests to the CMS Server API on behalf on the Add-In, and get the default space details of a user
+- EwsProxy.php : Server side PHP script to set the UCCapabilities property of a calendar Item through EWS (Exchange Web Services) on behalf of the Add-In.
 
-## Addin Location
+## Add-In Location
 
-The Outlook Addin itself is located in the OutlookAddin folder. Those files are automaticaly downloaded by the client when the addin is pushed by the Exchange Server (note : not all files may be needed for the Add-In to work, just using the default template from MSFT ...).
+The Outlook Add-In itself is located in the OutlookAdd-In folder. Those files are automaticaly downloaded by the client when the Add-In is pushed by the Exchange Server (note : not all files may be needed for the Add-In to work, just using the default template from MSFT ...).
 
 The most important files are :
 
-- CMS_Addin_Manifest.xml : The descriptor of the addin, where to get necessary files through HTTP, etc ... This needs to be configured. This is the file that you have to load into Exchange Server when installing the addin.
+- CMS_Add-In_Manifest.xml : The descriptor of the Add-In, where to get necessary files through HTTP, etc ... This needs to be configured. This is the file that you have to load into Exchange Server when installing the Add-In.
 
-- FunctionFile/Function.js : The most important file, as it is the core logic of the Addin (ie. what happens when you click the addin button in Outlook !)
+- FunctionFile/Function.js : The most important file, as it is the core logic of the Add-In (ie. what happens when you click the Add-In button in Outlook !)
 
 ## OBTP Support
 
-This Outlook addin mimics the way CMR-Cloud OBTP works by provisioning the same calendar custom property ("UCCapabilies") as the Webex PTools (so TMS-XE "thinks" it is a CMR-Cloud meeting, and schedules a TMS ExternalBridge). This property is provisionned by a call to EWS through the EwsProxy.php script (the client-side addin has no capability to edit such advanced property of the message).
+This Outlook Add-In mimics the way CMR-Cloud OBTP works by provisioning the same calendar custom property ("UCCapabilies") as the Webex PTools (so TMS-XE "thinks" it is a CMR-Cloud meeting, and schedules a TMS ExternalBridge). This property is provisionned by a call to EWS through the EwsProxy.php script (the client-side Add-In has no capability to edit such advanced property of the message).
 
 ## User identification
 
-This addin uses the default AD-Synced coSpace of the current outlook user as the meeting point. It gets Outlook User Identity (email), and uses the CMS API user search capability (?filter=) to find the corresponding user on CMS (and grab coSpace details).
+This Add-In uses the default AD-Synced coSpace of the current outlook user as the meeting point. It gets Outlook User Identity (email), and uses the CMS API user search capability (?filter=) to find the corresponding user on CMS (and grab coSpace details).
 If the user CMS URI is NOT the email address, some codes have to be tweaked to send the right search string to CMS so it can find the right user (ie. if email is gubraux@cisco.com, but CMS user URI is gubraux.cms@cisco.com ...).
 
 ## EWS Impersonation
@@ -50,5 +50,5 @@ The add-in (through server-side PHP Scripts) have to make calls to EWS (Echanges
 
 1. Copy all files to a HTTPS + PHP enabled Web Server (note : Outlook seems to check for SSL certificate, so ensure that your web server certificate is trusted by the clients)
 2. Edit Config.php file with necessary informations
-3. Configure the addin XML manifest (CMS_Addin_Manifest.xml) with the right HTTPS domain/paths of your web server
-4. Upload the addin XML manifest to your exchange server addins repository. For testing, addins can be configured at user/mailbox level from the Heavy Client (Outlook > Account Infomation > Manage Add-Ins) or from Outlook Web Access (Gear icon > Manage Apps). Users may need specific Exchange permission to be able to install add-ins themselves.
+3. Configure the Add-In XML manifest (CMS_Add-In_Manifest.xml) with the right HTTPS domain/paths of your web server
+4. Upload the Add-In XML manifest to your exchange server Add-Ins repository. For testing, Add-Ins can be configured at user/mailbox level from the Heavy Client (Outlook > Account Infomation > Manage Add-Ins) or from Outlook Web Access (Gear icon > Manage Apps). Users may need specific Exchange permission to be able to install add-ins themselves.
