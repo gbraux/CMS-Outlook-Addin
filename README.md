@@ -4,8 +4,8 @@ A one-click Add-In to Outlook 2013, 2016 & Web/Mobile to add your Cisco Meeting 
 
 **Note : This is a proof-of-concept, developped and tested only into a lab environement. Trying to implement it as-is into a production envt may not be possible, or may require advanced tweaking at code-level**
 
-![My image](https://raw.githubusercontent.com/gbraux/CMS-Outlook-Add-In/master/BookingAdd-In1-edit.png)
-![My image](https://raw.githubusercontent.com/gbraux/CMS-Outlook-Add-In/master/BookingAdd-In2-edit.png)
+![My image](https://raw.githubusercontent.com/gbraux/CMS-Outlook-Addin/master/BookingAddin1-edit.png)
+![My image](https://raw.githubusercontent.com/gbraux/CMS-Outlook-Addin/master/BookingAddin2-edit.png)
 
 # Features
 -	Server Side Add-In, nothing to install on the outlook clients (Pushed by exchange server to all the clients).
