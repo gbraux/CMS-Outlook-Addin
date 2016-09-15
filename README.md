@@ -38,11 +38,13 @@ The most important files are :
 
 This Outlook Add-In mimics the way CMR-Cloud OBTP works by provisioning the same calendar custom property ("UCCapabilies") as the Webex PTools (so TMS-XE "thinks" it is a CMR-Cloud meeting, and schedules a TMS ExternalBridge). This property is provisioned by a call to EWS (Exchange Web Services) through the EwsProxy.php script (the client-side Add-In has no capability to edit the custom property that the PTools are creating - or at least not easily).
 
-BUT ... it is not so simple ... To be reachable on the Exchange Server, the calendar item is programmatically "saved" when you click on the Add-In button, so the draft is synced to the Exchange server (and can then be processed by any server-side script or EWS). The issue is that, if you programmatically add the required property to the draft calendar item through EWS ... this property will be overwritten (or deleted) when the user sends the meeting request (as the local version of the message on Outlook is considered as the most recent one, and all server-side changes on the draft are lost ...)
+BUT ... it is not so simple ... The issue is that, if you programmatically add the required property to the draft calendar item through EWS (you need to programaticaly "save"  the meeting request on Outlook before so the draft can by synced to Exchange and found by EWS) ... this property will be overwritten (or deleted) when the user sends the meeting request (as the local version of the message on Outlook is considered as the most recent one, and all server-side changes on the draft are lost ...)
 
 So, to be persistent, the custom property have to be created right AFTER the meeting request is sent ... But the Outlook JS API does not have any event to know when he message is sent !
-"The-Ugly-Hack" is the following : when the add-in button is pressed, it calls the remote EwsProxy.php script, and do not wait for any answer. The server-side script will then run, and loop on the draft calendar properties every 5 seconds (!) until MeetingRequestWasSent = true. It then writes the custom "UCCapabilies" property.
-The loop maximum execution time is limited by timeouts of the Web-Server and PHP. Default is 5 min in my lab environment. Which means that ... if you click the add-in ... and take MORE than 5 minute to set your meeting request details and send it ... the "UCCapabilies" will never be set ... and TMS-XE will book its default bridge, and not an ExternalBridge. 
+"The-Ugly-Hack" is the following : when the add-in button is pressed, it calls the remote EwsProxy.php script, and do not wait for any answer. The server-side script will then run, and loop on the calendar properties every 5 seconds (!) until MeetingRequestWasSent = true. It then writes the custom "UCCapabilies" property.
+The loop maximum execution time is limited by timeouts of the Web-Server and PHP. Default is 5 min in my lab environment. Which means that ... if you click the add-in ... and take MORE than 5 minute to set your meeting request details and send it ... the "UCCapabilies" will never be set ... and TMS-XE will book its default bridge, and not an ExternalBridge.
+
+There may be something to do with EWS notification, but I didn't had time to dig into it ...
 
 ## User identification
 
