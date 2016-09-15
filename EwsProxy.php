@@ -59,14 +59,25 @@ include ("config.php");
 // Wait 5 seconds to ensure that the draft calendar item is saved by the Outlook client to the Server
 sleep(5);
 
+// Get Data from Outlook Add-In
 $addin_id = $_GET['addin_id'];
 $prop_guid = $_GET['prop_guid'];
 $dest_uri = $_GET['dest_uri'];
 $email = $_GET['email'];
 
+//Generate UCCapabilities property to be added to the calendar (mimic Webex PTools for OBTP)
+$webex_prop = '<?xml version="1.0"?><CiscoOI><PTVersion>310000</PTVersion><PTReleaseVersion>31.5.1.60</PTReleaseVersion><OIVersion><CreatorOS>Windows</CreatorOS><ClientOS>Windows</ClientOS></OIVersion><PTFeatureConfig>1</PTFeatureConfig><ExternalSIPUrl>'.$dest_uri.'</ExternalSIPUrl><WebExOI>BLABLA</WebExOI><WebExSegmentID>PHNlZz48dHlwZT5ib29rbWFyazwvdHlwZT48cGF0dGVybj48Y2F0ZWdvcnk+cGxhaW5UZXh0PC9jYXRlZ29yeT48bmFtZT5XQlg2RjUxRTwvbmFtZT48dmVyaWZ5Q29kZT44MTE4MDwvdmVyaWZ5Q29kZT48L3BhdHRlcm4+PC9zZWc+DQoAAA==</WebExSegmentID><WebEx><Product><Major>Train</Major><Minor>T29</Minor><SP>8</SP><EP></EP><OtherFlag></OtherFlag></Product><MeetingInfo><site>acecloud.webex.com</site><brandName>acecloud</brandName><LoginName>gubraux</LoginName><LoginAccount>gubraux@cisco.com</LoginAccount><HostName>gubraux</HostName><HostAccount>gubraux@cisco.com</HostAccount><HostID>488092317</HostID><svcType>MC</svcType><MeetingKey>201430513</MeetingKey><audioType>2</audioType><meetingType>3</meetingType><meetingTemplateKey>S;MC;en_US;9.1;1445782;MC Default;D; ;</meetingTemplateKey><EmailBody><Version>1</Version><TagDataLength>100</TagDataLength><BeginTag></BeginTag><EndTag></EndTag></EmailBody></MeetingInfo></WebEx><WebExPMR>AAA=</WebExPMR></CiscoOI>';
+
 
 // ------------- GET DRAFT CALENDAR ITEM ID -------------
 // Use the custom GUID set by the Addin to find the EWS Item_ID
+
+// UGLY HACK BELLOW : The UCCapabilities property CANNOT be set on the calendar item BEFORE it is sent by the user.
+// (because all server-side properties that could have been customized will always overwritten by the send item)
+// As we need to write the property AFTER the calendar is sent, we will monitor (every 5 seconds) the item until we get MeetingRequestWasSent == true, 
+// and we can them write the property. Monitoring time is limited to the PHP session timer, ie. 5 minutes (at least with default IIS7 + PHP5 config)
+// Yes, this is ugly, and you are f***ed-up if you wait more than 5 min before sending your meeting request !
+// There may be somthing to to with EWS notifications ...
 
 $ews = new ExchangeWebServices($ews_server, $ews_admin_username, $ews_admin_password);
 
@@ -76,6 +87,13 @@ $sid->PrimarySmtpAddress = $email;
 $ei->ConnectingSID = $sid;
 $ews->setImpersonation($ei);
 
+$isSent = 0;
+$calendar_id = "";
+$calendar_changekey = "";
+
+
+while ($isSent != 1)
+{
 $request = new EWSType_FindItemType();
 
 $request->ItemShape = new EWSType_ItemResponseShapeType();
@@ -101,10 +119,18 @@ $request->Restriction->Contains->Constant->Value = '{"prop_guid":'.$prop_guid.'}
 
 $response = $ews->FindItem($request);
 echo '<pre>'.print_r($response, true).'</pre>';
+//file_put_contents("ewslog.txt", print_r($response, true), FILE_APPEND | LOCK_EX);
+
+$isSent = $response->ResponseMessages->FindItemResponseMessage->RootFolder->Items->CalendarItem->MeetingRequestWasSent;
+//echo "IS_SENT : ".$isSent;
+//file_put_contents("ewslog.txt", time()." IS_SENT : ".$isSent, FILE_APPEND | LOCK_EX);
 
 // Got the Item_ID (and Change_ID)
 $calendar_id = $response->ResponseMessages->FindItemResponseMessage->RootFolder->Items->CalendarItem->ItemId->Id;
 $calendar_changekey = $response->ResponseMessages->FindItemResponseMessage->RootFolder->Items->CalendarItem->ItemId->ChangeKey;
+sleep(5);
+
+}
 
 
 
@@ -150,5 +176,6 @@ $request->ItemChanges[] = $change;
 
 $response = $ews->UpdateItem($request);
 var_dump($response);
+//file_put_contents("ewslog.txt", print_r($response, true), FILE_APPEND | LOCK_EX);
 
 ?>

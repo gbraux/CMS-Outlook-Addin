@@ -1,6 +1,6 @@
 <?php
 /*
---- Cisco CMS Outlook Addin /w OBTP - v1 ---
+--- Cisco CMS Outlook Addin /w OBTP ---
 
 CmsProxy.php : Server side PHP script to make REST requests to the CMS Server API, and get the default space details of a user
 
