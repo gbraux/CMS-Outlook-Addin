@@ -1,4 +1,5 @@
 # CMS-Outlook-Add-In
+Guillaume BRAUX (gubraux@cisco.com)
 
 A one-click Add-In to Outlook 2013, 2016 & Web/Mobile to add your Cisco Meeting Server personnal meeting room details to your Outlook meeting request body. It also handles room-based video endpoints reservation & "One-Button-To-Push" (Cisco TMS-XE mandatory) if those rooms are added as participants in the meeting request.
 
@@ -33,9 +34,16 @@ The most important files are :
 
 - FunctionFile/Function.js : The most important file, as it is the core logic of the Add-In (ie. what happens when you click the Add-In button in Outlook !)
 
-## OBTP Support
+## OBTP Support (AKA "The-Ugly-Hack")
 
-This Outlook Add-In mimics the way CMR-Cloud OBTP works by provisioning the same calendar custom property ("UCCapabilies") as the Webex PTools (so TMS-XE "thinks" it is a CMR-Cloud meeting, and schedules a TMS ExternalBridge). This property is provisionned by a call to EWS through the EwsProxy.php script (the client-side Add-In has no capability to edit such advanced property of the message).
+This Outlook Add-In mimics the way CMR-Cloud OBTP works by provisioning the same calendar custom property ("UCCapabilies") as the Webex PTools (so TMS-XE "thinks" it is a CMR-Cloud meeting, and schedules a TMS ExternalBridge). This property is provisionned by a call to EWS (Exchange Web Services) through the EwsProxy.php script (the client-side Add-In has no capability to edit the custom property that the PTools are creating - or at least not easily).
+
+BUT ... it is not so simple ... To be reachable on the Exchange Server, the calendar item is programaticaly "saved" when you click on the Add-In button, so the draft is synced to the Exchange server (and can then be processed by any server-side script or EWS). The issue is that, if you programaticaly add the required property to the draft calendar item through EWS ... this property will be overwritten (or deleted) when the user sends the meeting request (as the local version of the message on Outlook is considered as the most recent one, and all server-side changes on the draft are lost ...)
+
+So, to be persistent, the custom property have to be created right AFTER the meeting request is sent ... But the Outlook JS API does not have any event to know when he message is sent !
+"The-Ugly-Hack" is the following : when the add-in button is pressed, it calls the remote EwsProxy.php script, and do not wait any answer. The server-side script will then run, and loop on the draft calendar properties item every 5 seconds (!) until MeetingRequestWasSent = true. It then write the custom "UCCapabilies" property.
+The loop maximum execution time is limited by timeouts of the WebServer and PHP. Default is 5 min in my lab environnement. Which means that ... if you click the add-in ... and takes MORE than 5 minute to set your meeting request and send it ... the "UCCapabilies" will never be set ... and TMS-XE will book its default bridge, and not an ExternalBridge. 
+
 
 ## User identification
 
