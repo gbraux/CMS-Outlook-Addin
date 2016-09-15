@@ -41,9 +41,8 @@ This Outlook Add-In mimics the way CMR-Cloud OBTP works by provisioning the same
 BUT ... it is not so simple ... To be reachable on the Exchange Server, the calendar item is programaticaly "saved" when you click on the Add-In button, so the draft is synced to the Exchange server (and can then be processed by any server-side script or EWS). The issue is that, if you programaticaly add the required property to the draft calendar item through EWS ... this property will be overwritten (or deleted) when the user sends the meeting request (as the local version of the message on Outlook is considered as the most recent one, and all server-side changes on the draft are lost ...)
 
 So, to be persistent, the custom property have to be created right AFTER the meeting request is sent ... But the Outlook JS API does not have any event to know when he message is sent !
-"The-Ugly-Hack" is the following : when the add-in button is pressed, it calls the remote EwsProxy.php script, and do not wait any answer. The server-side script will then run, and loop on the draft calendar properties item every 5 seconds (!) until MeetingRequestWasSent = true. It then write the custom "UCCapabilies" property.
-The loop maximum execution time is limited by timeouts of the WebServer and PHP. Default is 5 min in my lab environnement. Which means that ... if you click the add-in ... and takes MORE than 5 minute to set your meeting request and send it ... the "UCCapabilies" will never be set ... and TMS-XE will book its default bridge, and not an ExternalBridge. 
-
+"The-Ugly-Hack" is the following : when the add-in button is pressed, it calls the remote EwsProxy.php script, and do not wait for any answer. The server-side script will then run, and loop on the draft calendar properties every 5 seconds (!) until MeetingRequestWasSent = true. It then writes the custom "UCCapabilies" property.
+The loop maximum execution time is limited by timeouts of the Web-Server and PHP. Default is 5 min in my lab environnement. Which means that ... if you click the add-in ... and take MORE than 5 minute to set your meeting request details and send it ... the "UCCapabilies" will never be set ... and TMS-XE will book its default bridge, and not an ExternalBridge. 
 
 ## User identification
 
