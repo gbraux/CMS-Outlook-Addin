@@ -1,5 +1,5 @@
 # CMS-Outlook-Add-In
-Guillaume BRAUX (gubraux@cisco.com)
+Guillaume BRAUX (gubraux@cisco.com) - Paris, France.
 
 A one-click Add-In to Outlook 2013, 2016 & Web/Mobile to add your Cisco Meeting Server personal meeting room details to your Outlook meeting request body. It also handles room-based video endpoints reservation & "One-Button-To-Push" (Cisco TMS-XE mandatory) if those rooms are added as participants in the meeting request.
 
