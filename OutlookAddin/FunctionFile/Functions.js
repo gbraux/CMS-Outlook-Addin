@@ -61,7 +61,7 @@ function meetingSchedRoutine(event) {
 
           // DEBUG - Force Username ------
 
-          //userFilter = "pierre";
+          // userFilter = "pierre";
 
           // -----------------------------
 
@@ -136,8 +136,9 @@ function meetingSchedRoutine(event) {
 
                     _customProps.saveAsync(function (result) {
 
-                      // Save the meeting request draft to Exchange (same as clicking on the "save" button). Will allow our EWS server-side script to find and edit it.
-                      item.saveAsync(function (result) {
+                      // [DEPRECIATED] Save the meeting request draft to Exchange (same as clicking on the "save" button). Will allow our EWS server-side script to find and edit it.
+                      // NOTE : We don't need to use saveAsync anymore, as EWS does not need to access the draft, but only the final sent calendar item
+                      //item.saveAsync(function (result) {
 
 
                         // Call to Exchange EWS (through Proxy) to create and populate the "UCCapabilites" property into the server stored calendar item.
@@ -154,7 +155,7 @@ function meetingSchedRoutine(event) {
 
                             
 
-                          });
+                          //});
                       });
                     });
                   });

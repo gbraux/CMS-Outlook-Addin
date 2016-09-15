@@ -1,6 +1,6 @@
 <?php
 /*
---- Cisco CMS Outlook Addin /w OBTP - v1 ---
+--- Cisco CMS Outlook Addin /w OBTP ---
 
 EwsProxy.php : Server side PHP script to set the UCCapabilities property of a calendar Item through EWS (Exchange Web Services)
 
@@ -69,7 +69,7 @@ $email = $_GET['email'];
 $webex_prop = '<?xml version="1.0"?><CiscoOI><PTVersion>310000</PTVersion><PTReleaseVersion>31.5.1.60</PTReleaseVersion><OIVersion><CreatorOS>Windows</CreatorOS><ClientOS>Windows</ClientOS></OIVersion><PTFeatureConfig>1</PTFeatureConfig><ExternalSIPUrl>'.$dest_uri.'</ExternalSIPUrl><WebExOI>BLABLA</WebExOI><WebExSegmentID>PHNlZz48dHlwZT5ib29rbWFyazwvdHlwZT48cGF0dGVybj48Y2F0ZWdvcnk+cGxhaW5UZXh0PC9jYXRlZ29yeT48bmFtZT5XQlg2RjUxRTwvbmFtZT48dmVyaWZ5Q29kZT44MTE4MDwvdmVyaWZ5Q29kZT48L3BhdHRlcm4+PC9zZWc+DQoAAA==</WebExSegmentID><WebEx><Product><Major>Train</Major><Minor>T29</Minor><SP>8</SP><EP></EP><OtherFlag></OtherFlag></Product><MeetingInfo><site>acecloud.webex.com</site><brandName>acecloud</brandName><LoginName>gubraux</LoginName><LoginAccount>gubraux@cisco.com</LoginAccount><HostName>gubraux</HostName><HostAccount>gubraux@cisco.com</HostAccount><HostID>488092317</HostID><svcType>MC</svcType><MeetingKey>201430513</MeetingKey><audioType>2</audioType><meetingType>3</meetingType><meetingTemplateKey>S;MC;en_US;9.1;1445782;MC Default;D; ;</meetingTemplateKey><EmailBody><Version>1</Version><TagDataLength>100</TagDataLength><BeginTag></BeginTag><EndTag></EndTag></EmailBody></MeetingInfo></WebEx><WebExPMR>AAA=</WebExPMR></CiscoOI>';
 
 
-// ------------- GET DRAFT CALENDAR ITEM ID -------------
+// ------------- GET CALENDAR PROPERTIES & ITEM_ID -------------
 // Use the custom GUID set by the Addin to find the EWS Item_ID
 
 // UGLY HACK BELLOW : The UCCapabilities property CANNOT be set on the calendar item BEFORE it is sent by the user.
@@ -119,11 +119,11 @@ $request->Restriction->Contains->Constant->Value = '{"prop_guid":'.$prop_guid.'}
 
 $response = $ews->FindItem($request);
 echo '<pre>'.print_r($response, true).'</pre>';
-//file_put_contents("ewslog.txt", print_r($response, true), FILE_APPEND | LOCK_EX);
+file_put_contents("ewslog.txt", print_r($response, true), FILE_APPEND | LOCK_EX);
 
 $isSent = $response->ResponseMessages->FindItemResponseMessage->RootFolder->Items->CalendarItem->MeetingRequestWasSent;
 //echo "IS_SENT : ".$isSent;
-//file_put_contents("ewslog.txt", time()." IS_SENT : ".$isSent, FILE_APPEND | LOCK_EX);
+file_put_contents("ewslog.txt", time()." IS_SENT : ".$isSent, FILE_APPEND | LOCK_EX);
 
 // Got the Item_ID (and Change_ID)
 $calendar_id = $response->ResponseMessages->FindItemResponseMessage->RootFolder->Items->CalendarItem->ItemId->Id;
