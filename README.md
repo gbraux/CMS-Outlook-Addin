@@ -1,9 +1,9 @@
 # CMS-Outlook-Add-In
 Guillaume BRAUX (gubraux@cisco.com)
 
-A one-click Add-In to Outlook 2013, 2016 & Web/Mobile to add your Cisco Meeting Server personnal meeting room details to your Outlook meeting request body. It also handles room-based video endpoints reservation & "One-Button-To-Push" (Cisco TMS-XE mandatory) if those rooms are added as participants in the meeting request.
+A one-click Add-In to Outlook 2013, 2016 & Web/Mobile to add your Cisco Meeting Server personal meeting room details to your Outlook meeting request body. It also handles room-based video endpoints reservation & "One-Button-To-Push" (Cisco TMS-XE mandatory) if those rooms are added as participants in the meeting request.
 
-**Note : This is a proof-of-concept, developped and tested only into a lab environement. Trying to implement it as-is into a production envt may not be possible, or may require advanced tweaking at code-level**
+**Note : This is a proof-of-concept, developed and tested only into a lab environment. Trying to implement it as-is into a production envt may not be possible, or may require advanced tweaking at code-level**
 
 ![My image](https://raw.githubusercontent.com/gbraux/CMS-Outlook-Addin/master/BookingAddin1-edit.png)
 ![My image](https://raw.githubusercontent.com/gbraux/CMS-Outlook-Addin/master/BookingAddin2-edit.png)
@@ -26,7 +26,7 @@ Those scripts HAVE to be hosted on the same Web Server as the Add-In (no support
 
 ## Add-In Location
 
-The Outlook Add-In itself is located in the OutlookAdd-In folder. Those files are automaticaly downloaded by the client when the Add-In is pushed by the Exchange Server (note : not all files may be needed for the Add-In to work, just using the default template from MSFT ...).
+The Outlook Add-In itself is located in the OutlookAdd-In folder. Those files are automatically downloaded by the client when the Add-In is pushed by the Exchange Server (note : not all files may be needed for the Add-In to work, just using the default template from MSFT ...).
 
 The most important files are :
 
@@ -36,13 +36,13 @@ The most important files are :
 
 ## OBTP Support (AKA "The-Ugly-Hack")
 
-This Outlook Add-In mimics the way CMR-Cloud OBTP works by provisioning the same calendar custom property ("UCCapabilies") as the Webex PTools (so TMS-XE "thinks" it is a CMR-Cloud meeting, and schedules a TMS ExternalBridge). This property is provisionned by a call to EWS (Exchange Web Services) through the EwsProxy.php script (the client-side Add-In has no capability to edit the custom property that the PTools are creating - or at least not easily).
+This Outlook Add-In mimics the way CMR-Cloud OBTP works by provisioning the same calendar custom property ("UCCapabilies") as the Webex PTools (so TMS-XE "thinks" it is a CMR-Cloud meeting, and schedules a TMS ExternalBridge). This property is provisioned by a call to EWS (Exchange Web Services) through the EwsProxy.php script (the client-side Add-In has no capability to edit the custom property that the PTools are creating - or at least not easily).
 
-BUT ... it is not so simple ... To be reachable on the Exchange Server, the calendar item is programaticaly "saved" when you click on the Add-In button, so the draft is synced to the Exchange server (and can then be processed by any server-side script or EWS). The issue is that, if you programaticaly add the required property to the draft calendar item through EWS ... this property will be overwritten (or deleted) when the user sends the meeting request (as the local version of the message on Outlook is considered as the most recent one, and all server-side changes on the draft are lost ...)
+BUT ... it is not so simple ... To be reachable on the Exchange Server, the calendar item is programmatically "saved" when you click on the Add-In button, so the draft is synced to the Exchange server (and can then be processed by any server-side script or EWS). The issue is that, if you programmatically add the required property to the draft calendar item through EWS ... this property will be overwritten (or deleted) when the user sends the meeting request (as the local version of the message on Outlook is considered as the most recent one, and all server-side changes on the draft are lost ...)
 
 So, to be persistent, the custom property have to be created right AFTER the meeting request is sent ... But the Outlook JS API does not have any event to know when he message is sent !
 "The-Ugly-Hack" is the following : when the add-in button is pressed, it calls the remote EwsProxy.php script, and do not wait for any answer. The server-side script will then run, and loop on the draft calendar properties every 5 seconds (!) until MeetingRequestWasSent = true. It then writes the custom "UCCapabilies" property.
-The loop maximum execution time is limited by timeouts of the Web-Server and PHP. Default is 5 min in my lab environnement. Which means that ... if you click the add-in ... and take MORE than 5 minute to set your meeting request details and send it ... the "UCCapabilies" will never be set ... and TMS-XE will book its default bridge, and not an ExternalBridge. 
+The loop maximum execution time is limited by timeouts of the Web-Server and PHP. Default is 5 min in my lab environment. Which means that ... if you click the add-in ... and take MORE than 5 minute to set your meeting request details and send it ... the "UCCapabilies" will never be set ... and TMS-XE will book its default bridge, and not an ExternalBridge. 
 
 ## User identification
 
@@ -51,7 +51,7 @@ If the user CMS URI is NOT the email address, some codes have to be tweaked to s
 
 ## EWS Impersonation
 
-The add-in (through server-side PHP Scripts) have to make calls to EWS (Echanges Web Services) for advanced features (ie. set OBTP / UCCapabilites property to the calendar item). Impersonnation is used so the script (through EWS) can get access to the current mailbox of the user making the request. As such, a super user (with impersonnation enabled) needs to be used to make the EWS calls.
+The add-in (through server-side PHP Scripts) have to make calls to EWS (Echanges Web Services) for advanced features (ie. set OBTP / UCCapabilites property to the calendar item). Impersonation is used so the script (through EWS) can get access to the current mailbox of the user making the request. As such, a super user (with impersonation enabled) needs to be used to make the EWS calls.
 
 # Install
 
