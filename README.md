@@ -18,12 +18,6 @@ A one-click Add-In to Outlook 2013, 2016 & Web/Mobile to add your Cisco Meeting 
 
 # Techical details
 
-Because of limitations of "light" javascript-based Outlook Add-ins (supported since Outlook 2013 and pushed by the Exchange Server), we also need 2 server-side PHP scripts hosted on a web server to handle some stuff the client-side Add-In can't do itself (think about API calls to CMS, or some Exchange Web Services calls).
-Those scripts HAVE to be hosted on the same Web Server as the Add-In (no support for CrossDomain calls), and are called by the Add-In through Javascript AJAX calls.
-
-- CmsProxy.php : Server side PHP script to make REST requests to the CMS Server API on behalf on the Add-In, and get the default space details of a user
-- EwsProxy.php : Server side PHP script to set the UCCapabilities property of a calendar Item through EWS (Exchange Web Services) on behalf of the Add-In.
-
 ## Add-In Location
 
 The Outlook Add-In itself is located in the OutlookAdd-In folder. Those files are automatically downloaded by the client when the Add-In is pushed by the Exchange Server (note : not all files may be needed for the Add-In to work, just using the default template from MSFT ...).
@@ -33,6 +27,14 @@ The most important files are :
 - CMS_Add-In_Manifest.xml : The descriptor of the Add-In, where to get necessary files through HTTP, etc ... This needs to be configured. This is the file that you have to load into Exchange Server when installing the Add-In.
 
 - FunctionFile/Function.js : The most important file, as it is the core logic of the Add-In (ie. what happens when you click the Add-In button in Outlook !)
+
+## Server-Side scripts
+
+Because of limitations of "light" javascript-based Outlook Add-ins (supported since Outlook 2013 and pushed by the Exchange Server), we also need 2 server-side PHP scripts hosted on a web server to handle some stuff the client-side Add-In can't do itself (think about API calls to CMS, or some Exchange Web Services calls).
+Those scripts HAVE to be hosted on the same Web Server as the Add-In (no support for CrossDomain calls), and are called by the Add-In through Javascript AJAX calls.
+
+- CmsProxy.php : Server side PHP script to make REST requests to the CMS Server API on behalf on the Add-In, and get the default space details of a user
+- EwsProxy.php : Server side PHP script to set the UCCapabilities property of a calendar Item through EWS (Exchange Web Services) on behalf of the Add-In.
 
 ## OBTP Support (AKA "The-Ugly-Hack")
 
