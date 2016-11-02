@@ -80,7 +80,13 @@ function meetingSchedRoutine(event) {
             json = JSON.parse(response);
 
             // Check if PIN code is defined in CMS
-            pin = "None"
+            
+			// English Text
+			//pin = "None";
+			
+			// French Text
+			pin = "Aucun";
+			
             if (json.cms_cospace_pin != null)
               pin = json.cms_cospace_pin;
 
@@ -90,8 +96,12 @@ function meetingSchedRoutine(event) {
             // Formating can be HTML or plain text. We only manage HTML.
             if (result.value == Office.MailboxEnums.BodyType.Html)
             {
-              inviteText = "<div style='font-size:10.0pt;font-family:\"Segoe UI\",sans-serif;mso-fareast-font-family:\"Times New Roman\"'><br> --- " + Office.context.mailbox.userProfile.displayName + " invites you to this virtual meeting (" + json.cms_cospace_name + ") --- <br><br> You have several ways to join this meeting : <br><br> <ul> <li>From a <b>Computer (PC/Mac)</b> or <b>a Smartphone/Tablet (iOS-Android)</b>, click the following link : <a href=\"" + json.cms_cospace_webrtc + "\">" + json.cms_cospace_webrtc + "</a></li> <li>From a standard-based <b>videoconferencing endpoint</b> (SIP/H.323), enter the following video address (with your remote or touch panel) : " + json.cms_cospace_uri + "</li> <li>From a <b>Unified Communication client</b> (ie. Cisco Jabber, Microsoft Skype for Business), enter or click the following URI : <a href=\"sip:" + json.cms_cospace_uri + "\">sip:" + json.cms_cospace_uri + "</a></li> <li>From a <b>phone</b>, dial " + json.cms_phone_sda + ", and enter the meeting ID (" + json.cms_cospace_dn + ") </li></ul>Meeting PIN : " + pin + "<br><br><b>Note :</b> If you are near a <b>Proximity enabled Cisco video endpoint</b>, you can <a href=\"proximity:" + json.cms_cospace_uri + "\">click here</a> to connect the endpoint to the meeting using your Smartphone<br></div>";
-            }
+              // English Text
+			  //inviteText = "<div style='font-size:10.0pt;font-family:\"Segoe UI\",sans-serif;mso-fareast-font-family:\"Times New Roman\"'><br> --- " + Office.context.mailbox.userProfile.displayName + " invites you to this virtual meeting (" + json.cms_cospace_name + ") --- <br><br> You have several ways to join this meeting : <br><br> <ul> <li>From a <b>Computer (PC/Mac)</b> or <b>a Smartphone/Tablet (iOS-Android)</b>, click the following link : <a href=\"" + json.cms_cospace_webrtc + "\">" + json.cms_cospace_webrtc + "</a></li> <li>From a standard-based <b>videoconferencing endpoint</b> (SIP/H.323), enter the following video address (with your remote or touch panel) : " + json.cms_cospace_uri + "</li> <li>From a <b>Unified Communication client</b> (ie. Cisco Jabber, Microsoft Skype for Business), enter or click the following URI : <a href=\"sip:" + json.cms_cospace_uri + "\">sip:" + json.cms_cospace_uri + "</a></li> <li>From a <b>phone</b>, dial " + json.cms_phone_sda + ", and enter the meeting ID (" + json.cms_cospace_dn + ") </li></ul>Meeting PIN : " + pin + "<br><br><b>Note :</b> If you are near a <b>Proximity enabled Cisco video endpoint</b>, you can <a href=\"proximity:" + json.cms_cospace_uri + "\">click here</a> to connect the endpoint to the meeting using your Smartphone<br></div>";
+			  
+			  // French Text
+			  inviteText = "<div style='font-size:10.0pt;font-family:\"Segoe UI\",sans-serif;mso-fareast-font-family:\"Times New Roman\"'><br> --- " + Office.context.mailbox.userProfile.displayName + " vous invite à cette réunion virtuelle (" + json.cms_cospace_name + ") --- <br><br> Vous disposez de plusieurs moyens pour rejoindre cette réunion : <br><br> <ul> <li>Depuis un <b>Ordinateur (PC/Mac)</b> ou un <b>Smartphone/Tablette (iOS-Android)</b>, cliquez sur le lien suivant : <a href=\"" + json.cms_cospace_webrtc + "\">" + json.cms_cospace_webrtc + "</a></li> <li>Depuis un <b>Terminal de Visioconférence</b> (SIP/H.323), saisissez le numéro d'appel suivant (avec votre télécommande ou dalle tactile) : " + json.cms_cospace_uri + "</li> <li>Depuis un <b>Client de Communications Unifiées</b> (ie. Cisco Jabber, Microsoft Skype for Business), saisissez ou cliquez sur l'adresse suivante : <a href=\"sip:" + json.cms_cospace_uri + "\">sip:" + json.cms_cospace_uri + "</a></li> <li>Depuis un <b>Téléphone</b>, composez le numéro " + json.cms_phone_sda + ", puis le code de la réunion (" + json.cms_cospace_dn + ") </li></ul>Mot de passe de la réunion : " + pin + "<br><br><b>Note :</b> Si vous êtes à proximité d'un terminal de visioconférence Cisco disposant de la fonctionnalité <b>Cisco Proximity</b>, vous pouvez <a href=\"proximity:" + json.cms_cospace_uri + "\">cliquer ici</a> pour connecter le terminal à la réunion en utilisant votre smartphone<br></div>";
+			}
             else
             {
               // Plain text
@@ -116,7 +126,14 @@ function meetingSchedRoutine(event) {
 
 
                   // Write additionnal details in the meeting request Location field
-                  item.location.setAsync("CMS Virtual Meeting (ID : " + json.cms_cospace_dn + ")", function (result) {
+				  
+				  //English Text
+				  //locationText = "CMS Virtual Meeting (ID : " + json.cms_cospace_dn + ")";
+				  
+				  //French Text
+				  locationText = "Réunion virtuelle Cisco Meeting Server (ID : " + json.cms_cospace_dn + ")";
+				  
+                  item.location.setAsync(locationText, function (result) {
                     if (result.status === Office.AsyncResultStatus.Failed) {
                       Office.context.mailbox.item.notificationMessages.addAsync('setSubjectError', {
                         type: 'errorMessage',
