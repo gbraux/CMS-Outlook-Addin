@@ -8,16 +8,16 @@ Initial Creator : Guillaume BRAUX (gubraux@cisco.com)
 Released under the GNU General Public License v3
 */
 
-$cms_api_base_url = 'https://acano-core1.cisco.lab:445/api/v1/';
-$cms_webrtc_base_url = 'https://acano-core1.cisco.lab/invited.sf?id=';
+$cms_api_base_url = 'https://01cms.gz.local:445/api/v1/';
+$cms_webrtc_base_url = 'https://join.goznak.ru/invited.sf?id=';
 $cms_admin_username = "admin";
-$cms_admin_password = "something";
-$phone_sda = "+33.1.44.66.55.44";
-$sip_domain = "@company.com";
+$cms_admin_password = "P@ssw0rd1";
+$phone_sda = "800000";
+$sip_domain = "@cms.gz.local";
 
 
-$ews_server = "exchange.cisco.lab";
-$ews_admin_username = "cisco.lab\administrator";
-$ews_admin_password = "something";
+$ews_server = "01exchdag02.gz.local";
+$ews_admin_username = "gz\Cisco_CMS_svc";
+$ews_admin_password = "T$@3xvUeoJ";
 
 ?>
